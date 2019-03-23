@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 
 // modules
 import auth from './modules/auth';
+import myActions from './modules/my-actions';
+import newAction from './modules/new-action';
+import newCategory from './modules/new-category';
 
 Vue.use(Vuex);
 
@@ -20,7 +23,7 @@ const injectableMutations = {
       });
     })(state, payload));
   },
-  SET_STATE_VAL(state, { key, data, shouldMap = false, nested = false }) {
+  SET_STATE_VALUE(state, { key, data, shouldMap = false, nested = false }) {
     if (shouldMap) {
       injectableMutations.MAP_TO_STATE(state[key], { payload: data, nested });
     } else {
@@ -66,10 +69,13 @@ export const store = new Vuex.Store(wrap({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
     auth,
+    myActions,
+    newAction,
+    newCategory
   },
 }));
 
-// console.log(store)
+console.log(store)
 
 function wrap(mod) {
   const wrapped = mergeToPreserve({
@@ -107,21 +113,9 @@ export function bindState(namespace, items) {
   return items.reduce((accum, b) => {
     accum[b] = {
       get: () => reduceNamespace(namespace, b),
-      set: val => store.commit(namespace + '/setState', { key: b, data: val }),
+      set: val => store.commit(namespace + '/SET_STATE', { key: b, data: val }),
     };
     return accum;
   }, {});
-}
-
-function setState(state, { key, data }) {    
-  let stateRef = state;
-  key.split('.').reduce((a, b, i, arr) => {
-    if (i === arr.length - 1) {
-      stateRef[b] = data;
-    } else {
-      stateRef = stateRef[b];
-    }
-    return stateRef;
-  }, stateRef);  
 }
 

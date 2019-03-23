@@ -1,11 +1,11 @@
 <template>
   <b-container fluid id="app">
-    <b-row>
+    <b-row no-gutters>
       <b-col>
         <the-navbar v-if="isAuthenticated()"></the-navbar>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row no-gutters>
       <b-col>
         <router-view/>
       </b-col>
@@ -25,7 +25,10 @@ export default {
   computed: {
     ...mapGetters('auth', [
       'isAuthenticated',
-    ])
+    ]),
+  },
+  methods: {
+    
   }
 }
 </script>
