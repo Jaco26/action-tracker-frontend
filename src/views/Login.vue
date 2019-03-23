@@ -27,8 +27,5 @@ export default {
       });
     },
   },
-  computed: {
-    // ...mapGetters('auth', )
-  }
 }
 </script>

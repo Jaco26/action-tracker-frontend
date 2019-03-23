@@ -5,6 +5,9 @@ import { store } from '@/store/store';
 
 import Home from './views/Home.vue'
 import Login from './views/Login';
+import Reports from './views/Reports';
+import AccessDenied from './views/AccessDenied';
+import NotFound from './views/NotFound';
 
 Vue.use(Router)
 
@@ -25,7 +28,25 @@ const router = new Router({
       name: 'login',
       component: Login,  
     },
-  ]
+    {
+      path: '/reports',
+      name: 'reports',
+      component: Reports,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/access-denied',
+      name: 'access-denied',
+      component: AccessDenied,
+    },
+    {
+      path: '*',
+      component: NotFound,
+    }
+
+  ],
 });
 
 router.beforeEach((to, from, next) => {

@@ -21,7 +21,7 @@ function initialState() {
   return {
     accessToken: '',
     refreshToken: '',
-    loginErrors: []
+    errors: []
   }
 }
 
@@ -30,7 +30,7 @@ export default {
   state: loadFromStorage(initialState()),
   mutations: {
     handleLoginResponse(state, payload) {
-      state.loginErrors = payload.errors;
+      state.errors = payload.errors;
       state.accessToken = payload.data.access_token;
       state.refreshToken = payload.data.refresh_token;
     }
@@ -51,16 +51,53 @@ export default {
         router.push({ name: 'home' })
       } catch (error) {
         commit('SET_STATE_VALUE', { 
-          key: 'loginErrors', 
-          data: [...state.loginErrors, error] 
+          key: 'errors', 
+          data: [...state.errors, error] 
         });
       }
     },
-    logout({ commit }) {
-
+    logout({ commit, state }) {
+      Promise.all(
+        api({
+          url: '/auth/logout-access',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${state.accessToken}`,
+          }
+        }),
+        api({
+          url: '/auth/logout-refresh',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${state.refreshToken}`,
+          }
+        })
+      ).then(res => {
+        router.push({ name: 'login' });
+      })
+      .catch(err => {
+        console.error("ERROR LOGIN OUT", err);
+      });
     },
-    refresh({ commit }) {
-      
+    async refresh({ commit, state }) {
+      try {
+        const result = await api({
+          url: '/auth/refresh',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${state.refreshToken}`
+          }
+        });
+        commit('SET_STATE_VALUE', { 
+          key: 'accessToken',
+          data: result.data.access_token,
+        });
+      } catch (error) {
+        commit('SET_STATE_VALUE', {
+          key: 'errors',
+          data: [...state.errors, error],
+        });
+      }
     },
   },
   getters: {
