@@ -15,9 +15,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 
 import theNavbar from '@/components/navigation/the-navbar';
+import { Promise } from 'q';
 export default {
   components: {
     theNavbar,
@@ -26,9 +27,43 @@ export default {
     ...mapGetters('auth', [
       'isAuthenticated',
     ]),
+    ...mapState('auth', [
+      'accessToken'
+    ]),
+    ...mapState('myActions', [
+      'actions',
+      'actionsLoading',
+      'categories',
+      'categoriesLoading'
+    ])
   },
   methods: {
-    
+    ...mapActions('myActions', [
+      'getAllCategories',
+      'getAllActions',
+    ]),
+    shouldFetch(key) {
+      return this[key] && !this[key].length && !this[`${key}Loading`];
+    }
+  },
+  mounted() {
+    if (this.isAuthenticated()) {
+      Promise.all([
+        this.getAllCategories(),
+        this.getAllActions(),
+      ])
+    }
+  },
+  watch: {
+    accessToken: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          if (this.shouldFetch('actions')) this.getAllActions();
+          if (this.shouldFetch('categories')) this.getAllCategories();
+        }
+      },
+    }
   }
 }
 </script>

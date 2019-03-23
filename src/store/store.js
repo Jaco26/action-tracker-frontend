@@ -10,6 +10,13 @@ import newCategory from './modules/new-category';
 Vue.use(Vuex);
 
 const injectableMutations = {
+  LOADING(state, [key, bool]) {
+    if (state[`${key}Loading`] !== undefined) {
+      state[`${key}Loading`] = bool;
+    } else {
+      console.error(`state.${key}Loading does not exist.`);
+    }
+  },
   MAP_TO_STATE(state, { payload, nested = false }) {
     const isObj = val => val && !Array.isArray(val) && typeof val === 'object';
     ((function mapToState(oldState, newState) {
@@ -75,7 +82,7 @@ export const store = new Vuex.Store(wrap({
   },
 }));
 
-console.log(store)
+// console.log(store)
 
 function wrap(mod) {
   const wrapped = mergeToPreserve({

@@ -12,9 +12,6 @@ export default {
             url: '/action-category/',
             method: 'POST',
             data: { category_name: state.categoryName.trim() },
-            headers: {
-              Authorization: `Bearer ${rootState.auth.accessToken}`,
-            },
           });
           console.log(result)
           commit('myActions/SET_STATE_VALUE', {

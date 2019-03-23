@@ -60,9 +60,6 @@ export default {
         api({
           url: '/auth/logout-access',
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${state.accessToken}`,
-          }
         }),
         api({
           url: '/auth/logout-refresh',

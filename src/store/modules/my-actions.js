@@ -3,14 +3,26 @@ import api from '@/api';
 export default {
   state: {
     categories: [],
+    categoriesLoading: false,
     actions: [],
+    actionsLoading: false
   },
   actions: {
-    getAllCategories({ commit }, payload) {
+    async getAllCategories({ commit, rootState }, payload) {
+      try {
+        commit('LOADING', ['categories', true]);
+        const result = api({
+          url: '/action-category/',
+          method: 'GET',
+        })
+      } catch (error) {
+        
+      } finally {
 
+      }
     },
-    getAllActions({ commit }, payload) {
-
+    async getAllActions({ commit }, payload) {
+      console.log('YOU')
     },
     getAllActionsByDate({ commit }, payload) {
 
