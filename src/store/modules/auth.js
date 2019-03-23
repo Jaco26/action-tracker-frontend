@@ -1,4 +1,5 @@
 import api from '@/api'
+import router from '@/router';
 
 const STORAGE_KEY = 'auth';
 
@@ -35,7 +36,7 @@ export default {
     }
   },
   actions: {
-    async login({ commit }, { username, password }) {
+    async login({ commit, state }, { username, password }) {
       try {
         const result = await api({
           url: '/auth/login',
@@ -43,9 +44,16 @@ export default {
           data: { username, password }
         });
         commit('handleLoginResponse', result.data)
-        commit('SAVE_TO_STORAGE', { STORAGE_KEY, keys: ['accessToken', 'refreshToken'] });
+        commit('SAVE_TO_STORAGE', { 
+          STORAGE_KEY, 
+          keys: ['accessToken', 'refreshToken'] 
+        });
+        router.push({ name: 'home' })
       } catch (error) {
-        console.log(error)
+        commit('SET_STATE_VALUE', { 
+          key: 'loginErrors', 
+          data: [...state.loginErrors, error] 
+        });
       }
     },
     logout({ commit }) {
@@ -64,12 +72,15 @@ export default {
       }
       return null;
     },
-    accessTTL(state, getters) {
+    isAuthenticated(state, getters) {
       if (getters.parseJWT) {
-        const now = Date.now();
-        return now - getters.parseJWT.exp;
+        return () => {
+          const now = Date.now().valueOf() / 1000;
+          const exp = getters.parseJWT.exp;
+          return exp > now;
+        }
       }
-      return undefined;
-    }
+      return false;
+    },
   }
 }

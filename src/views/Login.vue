@@ -8,7 +8,7 @@
 
 <script>
 import theLoginForm from '@/components/auth/the-login-form';
-import { mapActions } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -24,12 +24,11 @@ export default {
       this.login({
         username: this.username,
         password: this.password,
-      }).then(() => {
-        console.log("SUCCESS")
-      }).catch(() => {
-        console.log("FAILURE")
-      })
+      });
     },
+  },
+  computed: {
+    // ...mapGetters('auth', )
   }
 }
 </script>

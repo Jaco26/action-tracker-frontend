@@ -7,6 +7,26 @@ import auth from './modules/auth';
 Vue.use(Vuex);
 
 const injectableMutations = {
+  MAP_TO_STATE(state, { payload, nested = false }) {
+    const isObj = val => val && !Array.isArray(val) && typeof val === 'object';
+    ((function mapToState(oldState, newState) {
+      const stateKeys = Object.keys(oldState);
+      stateKeys.forEach(key => {
+        if (isObj(oldState[key]) && nested && newState[key] !== undefined) {
+          mapToState(oldState[key], newState[key]);
+        } else if (newState[key] !== undefined) {
+          oldState[key] = newState[key]; // eslint-disable-line no-param-reassign
+        }
+      });
+    })(state, payload));
+  },
+  SET_STATE_VAL(state, { key, data, shouldMap = false, nested = false }) {
+    if (shouldMap) {
+      injectableMutations.MAP_TO_STATE(state[key], { payload: data, nested });
+    } else {
+      state[key] = data;
+    }
+  },
   SET_STATE(state, { key, data }) {
     let stateRef = state;
     key.split('.').reduce((a, b, i, arr) => {
