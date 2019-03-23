@@ -1,6 +1,10 @@
 <template>
   <b-container fluid id="app">
-    <the-navbar v-if="isAuthenticated()"></the-navbar>
+    <b-row>
+      <b-col>
+        <the-navbar v-if="isAuthenticated()"></the-navbar>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col>
         <router-view/>
@@ -25,3 +29,14 @@ export default {
   }
 }
 </script>
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: blue
+}
+.router-link-active {
+  color: white;
+}
+</style>

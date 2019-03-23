@@ -1,20 +1,19 @@
 <template>
-  <b-row>
-    <b-col>
-      <b-navbar>
-        <b-navbar-nav>
+  <b-navbar type="dark" variant="dark">
+    <b-navbar-nav style="width: 100%;">
+      <b-row style="width: 100%;" justify-content-between>
+        <b-col class="d-flex justify-content-start">
           <b-nav-item to="/">Home</b-nav-item>
-          <b-nav-item-dropdown
-            text="Account" 
-            right
-          >
+          <b-nav-item to="/reports">Reports</b-nav-item>
+        </b-col>
+        <b-col class="d-flex justify-content-end">
+          <b-nav-item-dropdown text="Account">
             <b-dropdown-item @click="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
-          
-        </b-navbar-nav>
-      </b-navbar>
-    </b-col>
-  </b-row>
+        </b-col>
+      </b-row>
+    </b-navbar-nav>
+  </b-navbar>
 </template>
 
 <script>

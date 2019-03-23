@@ -3,7 +3,6 @@ import router from '@/router';
 
 const STORAGE_KEY = 'auth';
 
-
 function loadFromStorage(state) {
   let stored = localStorage.getItem(STORAGE_KEY)  
   if (stored) {
