@@ -30,7 +30,7 @@ const injectableMutations = {
       });
     })(state, payload));
   },
-  SET_STATE_VALUE(state, { key, data, shouldMap = false, nested = false }) {
+  SET_STATE_VAL(state, [key, data, shouldMap = false, nested = false]) {
     if (shouldMap) {
       injectableMutations.MAP_TO_STATE(state[key], { payload: data, nested });
     } else {

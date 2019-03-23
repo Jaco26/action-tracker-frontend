@@ -1,4 +1,4 @@
-import api from '@/api'
+import { api } from '@/plugins/api'
 import router from '@/router';
 
 const STORAGE_KEY = 'auth';
@@ -49,10 +49,10 @@ export default {
         });
         router.push({ name: 'home' })
       } catch (error) {
-        commit('SET_STATE_VALUE', { 
-          key: 'errors', 
-          data: [...state.errors, error] 
-        });
+        commit('SET_STATE_VAL', [
+          'errors', 
+          [...state.errors, error]
+        ]);
       }
     },
     logout({ commit, state }) {
@@ -91,15 +91,9 @@ export default {
             Authorization: `Bearer ${state.refreshToken}`
           }
         });
-        commit('SET_STATE_VALUE', { 
-          key: 'accessToken',
-          data: result.data.access_token,
-        });
+        commit('SET_STATE_VAL', ['accessToken', result.data.data.access_token]);
       } catch (error) {
-        commit('SET_STATE_VALUE', {
-          key: 'errors',
-          data: [...state.errors, error],
-        });
+        commit('SET_STATE_VAL', ['errors', [...state.errors, error]]);
       }
     },
   },

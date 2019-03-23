@@ -16,9 +16,8 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
-
+import { api } from '@/plugins/api';
 import theNavbar from '@/components/navigation/the-navbar';
-import { Promise } from 'q';
 export default {
   components: {
     theNavbar,
@@ -46,19 +45,14 @@ export default {
       return this[key] && !this[key].length && !this[`${key}Loading`];
     }
   },
-  mounted() {
-    if (this.isAuthenticated()) {
-      Promise.all([
-        this.getAllCategories(),
-        this.getAllActions(),
-      ])
-    }
-  },
   watch: {
     accessToken: {
       immediate: true,
       handler(val) {
         if (val) {
+          if (!api.defaults.headers.common['Authorization']) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${val}`;
+          }
           if (this.shouldFetch('actions')) this.getAllActions();
           if (this.shouldFetch('categories')) this.getAllCategories();
         }
