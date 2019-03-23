@@ -57,7 +57,7 @@ export default {
       }
     },
     logout({ commit, state }) {
-      Promise.all(
+      Promise.all([
         api({
           url: '/auth/logout-access',
           method: 'POST',
@@ -72,11 +72,18 @@ export default {
             Authorization: `Bearer ${state.refreshToken}`,
           }
         })
-      ).then(res => {
+      ]).then(res => {
         router.push({ name: 'login' });
       })
       .catch(err => {
         console.error("ERROR LOGIN OUT", err);
+      })
+      .finally(() => {
+        commit('CLEAR_FIELDS', Object.keys(state));
+        commit('SAVE_TO_STORAGE', {
+          STORAGE_KEY,
+          keys: Object.keys(state),
+        });
       });
     },
     async refresh({ commit, state }) {
@@ -117,7 +124,7 @@ export default {
           return exp > now;
         }
       }
-      return false;
+      return () => false;
     },
   }
 }
