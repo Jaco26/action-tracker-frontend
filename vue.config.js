@@ -9,4 +9,8 @@ module.exports = {
       }
     }
   },
+  assetsDir: 'static',
+  chainWebpack: config => {
+    config.plugins.delete('pwa');
+  }
 };
