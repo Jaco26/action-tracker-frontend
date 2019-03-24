@@ -20,7 +20,6 @@
         :placeholder="`DELETE ${categoryDeleteName.toUpperCase()}`" 
       ></b-form-input>
     </b-form>
-    
   </b-modal>
 
 </template>

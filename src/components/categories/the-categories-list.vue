@@ -8,26 +8,33 @@
       <table class="table table-sm table-hover">
         <thead>
           <th>Category Name</th>
+
           <th></th>
         </thead>
         <tbody>
           <template v-for="cat in categories">
 
-            <tr :key="cat.id" v-if="categoryEditId">
+            <tr :key="cat.id" v-if="categoryEditId === cat.id">
               <td>
-                <input type="text" :placeholder="categoryNameToEdit" v-model.trim="categoryEditName">
+                <b-form @submit.prevent="submitEdit">
+                  <b-form-input
+                    type="text"
+                    :placeholder="categoryNameToEdit"
+                    v-model.trim="categoryEditName"
+                  ></b-form-input>
+                </b-form>
               </td>
-              <td>
-                <b-button @click="cancelEdit">Cancel</b-button>
-                <b-button @click="submitEdit">Save</b-button>
+              <td class="d-flex justify-content-end">
+                <b-button size="sm" variant="light" @click="cancelEdit">Cancel</b-button>
+                <b-button size="sm" variant="outline-primary" @click="submitEdit">Save</b-button>
               </td>
             </tr>
 
             <tr :key="cat.id + 'edit'" v-else >
               <td>{{cat.category_name}}</td>
-              <td>
-                <b-button @click="doEdit(cat.id)">Edit</b-button>
-                <b-button @click="doDelete(cat.id)">Delete</b-button>
+              <td class="d-flex justify-content-end">
+                <b-button size="sm" variant="outline-info" @click="doEdit(cat.id)">Edit</b-button>
+                <b-button size="sm" variant="outline-danger" @click="doDelete(cat.id)">Delete</b-button>
               </td>
             </tr>
           </template>
