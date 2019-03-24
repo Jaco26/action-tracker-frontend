@@ -20,13 +20,13 @@ export default {
         commit('LOADING', ['categories', false]);
       }
     },
-    async getAllActions({ commit }, payload) {
+    async getAllActions({ commit }) {
       try {
         commit('LOADING', ['actions', true]);
         const result = await api.get('/action-taken/');
         commit('SET_STATE_VAL', ['actions', result.data.data.actions])
       } catch (error) {
-        
+        commit('ERROR', error);
       } finally {
         commit('LOADING', ['actions', false]);
       }
@@ -35,9 +35,6 @@ export default {
 
     },
     getAllActionsByCategory({ commit }, payload) {
-
-    },
-    addNewAction({ commit }, payload) {
 
     },
     deleteAction({ commit }, payload) {

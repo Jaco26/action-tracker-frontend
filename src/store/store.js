@@ -48,6 +48,13 @@ const injectableMutations = {
       return stateRef;
     }, stateRef);
   },
+  ERROR(state, error) {
+    if (Array.isArray(state.errors)) {
+      state.errors.push(error);
+    } else {
+      console.error('State does not have an Array property named `errors`');
+    }
+  },
   SAVE_TO_STORAGE(state, { STORAGE_KEY, keys }) {
     const toSave = Object.keys(state).reduce((a, b) => {
       if (keys.includes(b)) {

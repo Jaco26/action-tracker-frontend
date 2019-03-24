@@ -3,10 +3,10 @@
     <b-col>
       <b-card no-body>
         <b-tabs card pills>
-          <b-tab title="New Action">
+          <b-tab title="New Action" active>
             <the-new-action-form></the-new-action-form>
           </b-tab>
-          <b-tab title="Action Categories" active>
+          <b-tab title="Action Categories">
             <b-row>
               <b-col>
                 <the-new-category-form></the-new-category-form>
