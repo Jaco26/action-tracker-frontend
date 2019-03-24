@@ -3,7 +3,15 @@ import { api } from '@/plugins/api';
 export default {
   state: {
     categoryName: '',
+    
     categoryEditId: '',
+    categoryEditName: '',
+
+    categoryDeleteId: '',
+    categoryDeleteName: '',
+
+    confirmCategoryDelete: false,
+
     categoryNameLoading: false, // is submitting
     errors: [],
   },
@@ -29,9 +37,24 @@ export default {
         }
       }
     },
-    async deleteCategory({ commit, dispatch }, categoryId) {
+    async submitEdit({ commit, dispatch, state }) {
+      if (state.categoryEditName) {
+        try {
+          await api.put('/action-category/', { 
+            new_category_name: state.categoryEditName,
+            category_id: state.categoryEditId,
+          });
+          dispatch('myActions/getAllCategories', null, { root: true });
+        } catch (error) {
+          commit('SET_STATE_VAL', ['errors', [...state.errors, error]]);
+        } finally {
+          commit('CLEAR_FIELDS', ['categoryEditId', 'categoryEditName'])
+        }
+      }
+    },
+    async deleteCategory({ commit, dispatch, state }) {
       try {
-        const result = await api.delete(`/action-category/${categoryId}`);
+        const result = await api.delete(`/action-category/${state.categoryDeleteId}`);
         dispatch('myActions/getAllCategories', null, { root: true });        
       } catch (error) {
         console.log(error)

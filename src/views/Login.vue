@@ -1,31 +1,28 @@
 <template>
-  <div class="home">
-    <input type="text" placeholder="Username" v-model="username">
-    <input type="password" placeholder="Password" v-model="password">
-    <button @click="onLogin">login</button>
+  <div class="auth">
+    <section v-if="showLogin">
+      <the-login-form></the-login-form>
+      <b-button @click="showLogin = false">create account</b-button>
+    </section>
+    <section v-else>
+      <the-registration-form></the-registration-form>
+      <b-button @click="showLogin = true">go to login</b-button>
+    </section>
   </div>
 </template>
 
 <script>
 import theLoginForm from '@/components/auth/the-login-form';
-import { mapActions, mapState, mapGetters } from 'vuex';
+import theRegistrationForm from '@/components/auth/the-registration-form';
 export default {
+  components: {
+    theLoginForm,
+    theRegistrationForm,
+  },
   data() {
     return {
-      username: '',
-      password: '',
-    };
-  },
-  methods: {
-    ...mapActions('auth', [
-      'login',
-    ]),
-    onLogin() {
-      this.login({
-        username: this.username,
-        password: this.password,
-      });
-    },
-  },
+      showLogin: true,
+    }
+  }
 }
 </script>

@@ -2,7 +2,10 @@
   <b-row>
     <b-col>
       <b-card no-body>
-        <b-tabs  card>
+        <b-tabs card pills>
+          <b-tab title="New Action">
+            <the-new-action-form></the-new-action-form>
+          </b-tab>
           <b-tab title="Action Categories" active>
             <b-row>
               <b-col>
@@ -14,9 +17,6 @@
                 <the-categories-list></the-categories-list>
               </b-col>
             </b-row>
-          </b-tab>
-          <b-tab title="New Action">
-            <the-new-action-form></the-new-action-form>
           </b-tab>
         </b-tabs>
       </b-card>

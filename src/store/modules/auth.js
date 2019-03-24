@@ -35,6 +35,13 @@ export default {
     }
   },
   actions: {
+    async register({ commit }, { username, password }) {
+      try {
+        await api.post('/auth/register', { username, password });
+      } catch (error) {
+        return error;
+      }
+    },
     async login({ commit, state }, { username, password }) {
       try {
         const result = await api({
