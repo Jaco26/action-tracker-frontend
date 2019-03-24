@@ -5,7 +5,7 @@ import Vuex from 'vuex';
 import auth from './modules/auth';
 import myActions from './modules/my-actions';
 import newAction from './modules/new-action';
-import newCategory from './modules/new-category';
+import actionCategory from './modules/action-category';
 
 Vue.use(Vuex);
 
@@ -78,7 +78,7 @@ export const store = new Vuex.Store(wrap({
     auth,
     myActions,
     newAction,
-    newCategory
+    actionCategory,
   },
 }));
 

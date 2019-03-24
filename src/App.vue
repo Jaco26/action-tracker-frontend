@@ -66,7 +66,6 @@ export default {
 html, body {
   margin: 0;
   height: 100%;
-  background-color: blue
 }
 .router-link-active {
   color: white;
