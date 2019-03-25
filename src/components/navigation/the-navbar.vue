@@ -7,7 +7,7 @@
           <b-nav-item to="/reports">Reports</b-nav-item>
         </b-col>
         <b-col class="d-flex justify-content-end">
-          <b-nav-item-dropdown text="Account">
+          <b-nav-item-dropdown :text="username">
             <b-dropdown-item @click="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-col>
@@ -17,11 +17,14 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 export default {
   computed: {
     ...mapGetters('auth', [
       'isAuthenticated',
+    ]),
+    ...mapState('auth', [
+      'username',
     ]),
   },
   methods: {

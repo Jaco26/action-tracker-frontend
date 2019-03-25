@@ -33,8 +33,16 @@
       </b-form-group>
       <b-form-group>
         <b-form-row>
-          <b-col class="d-flex justify-content-end">
-            <b-button variant="primary" type="submit">Submit</b-button>
+          <b-col class="d-flex justify-content-center">
+            <b-button 
+              block 
+              variant="primary" 
+              type="submit"
+              :disabled="submissionLoading"
+            >
+              <b-spinner v-if="submissionLoading" label="Submitting..."></b-spinner>
+              <span v-else>Submit</span> 
+            </b-button>
           </b-col>
         </b-form-row>
       </b-form-group>
@@ -62,6 +70,9 @@ export default {
       'description',
       'currentDate',
       'overrideTime',
+    ]),
+    ...mapState('newAction', [
+      'submissionLoading',
     ]),
     selectableCategories() {
       return this.$store.state.myActions.categories.map(c => ({ 

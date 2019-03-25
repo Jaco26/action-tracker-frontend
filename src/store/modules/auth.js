@@ -3,6 +3,30 @@ import router from '@/router';
 
 const STORAGE_KEY = 'auth';
 
+const util = {
+  clearFields(commit) {
+    const rootCommit = (mutationType, payload) => commit(mutationType, payload, { root: true });
+    rootCommit('myActions/CLEAR_FIELDS', {
+      actions: [],
+      categories: [],
+      errors: [],
+    });
+    rootCommit('newAction/CLEAR_FIELDS', {
+      currentDate: '',
+      description: '',
+      overrideTime: '',
+      selectedCategoryId: '',
+      errors: [],
+    });
+    rootCommit('auth/CLEAR_FIELDS', {
+      accessToken: '',
+      refreshToken: '',
+      username: '',
+      errors: [],
+    });
+  }
+}
+
 function loadFromStorage(state) {
   let stored = localStorage.getItem(STORAGE_KEY)  
   if (stored) {
@@ -20,6 +44,7 @@ function initialState() {
   return {
     accessToken: '',
     refreshToken: '',
+    username: '',
     errors: []
   }
 }
@@ -32,6 +57,7 @@ export default {
       state.errors = payload.errors;
       state.accessToken = payload.data.access_token;
       state.refreshToken = payload.data.refresh_token;
+      state.username = payload.data.username;
     }
   },
   actions: {
@@ -49,16 +75,17 @@ export default {
           method: 'POST',
           data: { username, password }
         });
+        console.log(result)
         commit('handleLoginResponse', result.data)
         commit('SAVE_TO_STORAGE', { 
           STORAGE_KEY, 
-          keys: ['accessToken', 'refreshToken'] 
+          keys: ['accessToken', 'refreshToken', 'username'] 
         });
         router.push({ name: 'home' })
       } catch (error) {
         commit('SET_STATE_VAL', [
           'errors', 
-          [...state.errors, error]
+          [...state.errors, error.message]
         ]);
       }
     },
@@ -76,17 +103,18 @@ export default {
           }
         })
       ]).then(res => {
-        router.push({ name: 'login' });
+        
       })
       .catch(err => {
         console.error("ERROR LOGIN OUT", err);
       })
       .finally(() => {
-        commit('CLEAR_FIELDS', Object.keys(state));
+        util.clearFields(commit);
         commit('SAVE_TO_STORAGE', {
           STORAGE_KEY,
           keys: Object.keys(state),
         });
+        router.push({ name: 'login' });
       });
     },
     async refresh({ commit, state }) {
@@ -100,7 +128,7 @@ export default {
         });
         commit('SET_STATE_VAL', ['accessToken', result.data.data.access_token]);
       } catch (error) {
-        commit('SET_STATE_VAL', ['errors', [...state.errors, error]]);
+        commit('SET_STATE_VAL', ['errors', [...state.errors, error.message]]);
       }
     },
   },

@@ -54,16 +54,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.auth.accessToken && store.getters['auth/isAuthenticated']()) {
       next();
     } else {
-      store.commit('auth/CLEAR_FIELDS', [
-        'accessToken',
-        'refreshToken',
-        'errors',
-      ]);
-      store.commit('auth/SAVE_TO_STORAGE', {
-        STORAGE_KEY: 'auth',
-        keys: ['accessToken', 'refreshToken']
-      })
-      router.push({ name: 'login' });
+      store.commit('auth/logout');
     }
   } else {
     next();

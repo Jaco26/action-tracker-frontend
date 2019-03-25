@@ -50,9 +50,7 @@ export default {
       immediate: true,
       handler(val) {
         if (val) {
-          if (!api.defaults.headers.common['Authorization']) {
-            api.defaults.headers.common['Authorization'] = `Bearer ${val}`;
-          }
+          api.defaults.headers.common['Authorization'] = `Bearer ${val}`;
           if (this.shouldFetch('actions')) this.getAllActions();
           if (this.shouldFetch('categories')) this.getAllCategories();
         }

@@ -29,8 +29,7 @@ export default {
             { root: true }
           );
         } catch (error) {
-          console.log(error)
-          commit('SET_STATE_VAL', ['errors', [...state.errors, error] ]);
+          commit('SET_STATE_VAL', ['errors', [...state.errors, error.message] ]);
         } finally {
           commit('LOADING', ['categoryName', false]);
           commit('CLEAR_FIELDS', ['categoryName']);
@@ -46,7 +45,7 @@ export default {
           });
           dispatch('myActions/getAllCategories', null, { root: true });
         } catch (error) {
-          commit('SET_STATE_VAL', ['errors', [...state.errors, error]]);
+          commit('SET_STATE_VAL', ['errors', [...state.errors, error.message]]);
         } finally {
           commit('CLEAR_FIELDS', ['categoryEditId', 'categoryEditName'])
         }
@@ -58,7 +57,7 @@ export default {
         dispatch('myActions/getAllCategories', null, { root: true });        
       } catch (error) {
         console.log(error)
-        commit('SET_STATE_VAL', ['errors', [...state.errors, error] ]);
+        commit('SET_STATE_VAL', ['errors', [...state.errors, error.message] ]);
       }
     }
   }

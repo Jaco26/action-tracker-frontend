@@ -65,9 +65,16 @@ const injectableMutations = {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   },
   CLEAR_FIELDS(state, keys = []) {
-    keys.forEach(key => {
-      state[key] = '';
-    });
+    console.log(keys)
+    if (keys && !Array.isArray(keys) && typeof keys === 'object') {
+      Object.keys(keys).forEach(key => {
+        state[key] = keys[key];
+      });
+    } else {
+      keys.forEach(key => {
+        state[key] = '';
+      });
+    }
   },
 };
 
