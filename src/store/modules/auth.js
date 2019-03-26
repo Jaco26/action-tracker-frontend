@@ -15,7 +15,7 @@ const util = {
       currentDate: '',
       description: '',
       overrideTime: '',
-      selectedCategoryId: '',
+      selectedCategoryId: null,
       errors: [],
     });
     rootCommit('auth/CLEAR_FIELDS', {

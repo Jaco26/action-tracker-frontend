@@ -2,7 +2,7 @@ import { api } from '@/plugins/api';
 
 export default {
   state: {
-    selectedCategoryId: '',
+    selectedCategoryId: null,
     description: '',
 
     currentDate: '',
@@ -26,7 +26,7 @@ export default {
         }
         const result = await api.post('/action-taken/', { action });
         dispatch('myActions/getAllActions', null, { root: true });
-        commit('CLEAR_FIELDS', ['selectedCategoryId', 'description', 'overrideTime'])
+        commit('CLEAR_FIELDS', { selectedCategoryId: null, description: '', overrideTime: '' });
       } catch (error) {
         commit('ERROR', error);
       } finally {

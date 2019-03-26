@@ -75,10 +75,11 @@ export default {
       'submissionLoading',
     ]),
     selectableCategories() {
-      return this.$store.state.myActions.categories.map(c => ({ 
+      const myCategories = this.$store.state.myActions.categories.map(c => ({ 
         value: c.id,
         text: c.category_name,
       }));
+      return [{ value: null, text: 'Please select an option'}, ...myCategories];
     },
   },
   methods: {
