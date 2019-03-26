@@ -73,8 +73,7 @@ export default {
             : new Date(d1.getTime() + milliOneDay + milliTZOffset);
 
           return state.actions.reduce((accum, action) => {
-            const testDate = new Date(new Date(action.ts) + milliTZOffset);
-            console.log(testDate - d1)
+            const testDate = new Date(new Date(action.ts).getTime() + milliTZOffset);
             if (testDate > d1 && testDate < d2) {
               accum.push(action);
             }

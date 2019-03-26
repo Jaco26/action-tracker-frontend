@@ -45,7 +45,8 @@ function initialState() {
     accessToken: '',
     refreshToken: '',
     username: '',
-    errors: []
+    errors: [],
+    loginLoading: false
   }
 }
 
@@ -70,12 +71,12 @@ export default {
     },
     async login({ commit, state }, { username, password }) {
       try {
+        commit('LOADING', ['login', true]);
         const result = await api({
           url: '/auth/login',
           method: 'POST',
           data: { username, password }
         });
-        console.log(result)
         commit('handleLoginResponse', result.data)
         commit('SAVE_TO_STORAGE', { 
           STORAGE_KEY, 
@@ -87,6 +88,8 @@ export default {
           'errors', 
           [...state.errors, error.message]
         ]);
+      } finally {
+        commit('LOADING', ['login', false]);
       }
     },
     logout({ commit, state }) {
