@@ -7,6 +7,8 @@ export default {
     actions: [],
     actionsLoading: false,
     errors: [],
+    dateStr1: '',
+    dateStr2: '',
   },
   actions: {
     async getAllCategories({ commit, state }, payload) {
@@ -24,9 +26,12 @@ export default {
       try {
         commit('LOADING', ['actions', true]);
         const result = await api.get('/action-taken/');
-        commit('SET_STATE_VAL', ['actions', result.data.data.actions]);
+        commit('SET_STATE_VAL', ['actions', result.data.data.actions.map(a => {
+          a.displayDate = new Date(a.ts).toLocaleString();
+          return a;
+        })]);
       } catch (error) {
-        commit('ERROR', error);
+        commit('ERROR', error.message);
       } finally {
         commit('LOADING', ['actions', false]);
       }
@@ -43,5 +48,41 @@ export default {
     editAction({ commit }, payload) {
 
     },
+  },
+  getters: {
+    groupActionsByCategory(state) {
+      if (state.actions.length) {
+        return state.actions.reduce((accum, action) => {
+          if (!accum[action.category_name]) accum[action.category_name] = [];
+          const { ts, displayDate, description, id } = action;
+          accum[action.category_name].push({ ts, displayDate, description, id });
+          return accum;
+        }, {});
+      }
+      return null;
+    },
+    filterActionsByDate(state, getters) {
+      if (state.actions && state.dateStr1) {
+          const { dateStr1, dateStr2 } = state;
+          const baseDate = new Date(dateStr1);
+          const milliTZOffset = baseDate.getTimezoneOffset() * 60000;
+          const milliOneDay = 86400000;
+          const d1 = new Date(baseDate.getTime() + milliTZOffset);
+          const d2 = dateStr2
+            ? new Date(new Date(dateStr2).getTime() + milliOneDay + milliTZOffset)
+            : new Date(d1.getTime() + milliOneDay + milliTZOffset);
+
+          return state.actions.reduce((accum, action) => {
+            const testDate = new Date(new Date(action.ts) + milliTZOffset);
+            console.log(testDate - d1)
+            if (testDate > d1 && testDate < d2) {
+              accum.push(action);
+            }
+            return accum;
+          }, []);
+        }
+      return  null;
+    }
+
   }
 }

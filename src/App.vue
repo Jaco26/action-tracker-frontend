@@ -1,17 +1,14 @@
 <template>
-  <b-container fluid id="app">
-    <b-row no-gutters>
-      <b-col>
-        <the-navbar v-if="isAuthenticated()"></the-navbar>
-      </b-col>
-    </b-row>
-    <b-row no-gutters>
-      <b-col>
-        <router-view/>
-      </b-col>
-    </b-row>
-    
-  </b-container>
+  <div>
+    <the-navbar></the-navbar>
+    <b-container fluid id="app">
+      <b-row no-gutters>
+        <b-col>
+          <router-view></router-view>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -65,6 +62,9 @@ html, body {
   margin: 0;
   height: 100%;
 }
+/* #app {
+  margin-top: 4rem;
+} */
 .router-link-active {
   color: white;
 }

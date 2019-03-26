@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.auth.accessToken && store.getters['auth/isAuthenticated']()) {
       next();
     } else {
-      store.commit('auth/logout');
+      store.dispatch('auth/logout');
     }
   } else {
     next();

@@ -1,5 +1,5 @@
 <template>
-  <b-navbar type="dark" variant="dark">
+  <b-navbar v-if="isAuthenticated()" sticky type="dark" variant="dark">
     <b-navbar-nav style="width: 100%;">
       <b-row style="width: 100%;" justify-content-between>
         <b-col class="d-flex justify-content-start">
@@ -31,6 +31,6 @@ export default {
     ...mapActions('auth', [
       'logout',
     ]),
-  }
+  },
 }
 </script>

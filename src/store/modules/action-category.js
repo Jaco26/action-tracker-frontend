@@ -44,6 +44,7 @@ export default {
             category_id: state.categoryEditId,
           });
           dispatch('myActions/getAllCategories', null, { root: true });
+          dispatch('myActions/getAllActions', null, { root: true }); 
         } catch (error) {
           commit('SET_STATE_VAL', ['errors', [...state.errors, error.message]]);
         } finally {
@@ -55,6 +56,7 @@ export default {
       try {
         const result = await api.delete(`/action-category/${state.categoryDeleteId}`);
         dispatch('myActions/getAllCategories', null, { root: true });        
+        dispatch('myActions/getAllActions', null, { root: true });       
       } catch (error) {
         console.log(error)
         commit('SET_STATE_VAL', ['errors', [...state.errors, error.message] ]);

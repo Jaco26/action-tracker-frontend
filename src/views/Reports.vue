@@ -1,19 +1,14 @@
 <template>
   <div>
-    This is the reports page
-    <pre>
-      {{actions}}
-    </pre>
+    <the-actions-list></the-actions-list>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import theActionsList from '@/components/actions/the-actions-list';
 export default {
-  computed: {
-    ...mapState('myActions', [
-      'actions',
-    ])
-  }
+  components: {
+    theActionsList,
+  },
 }
 </script>
