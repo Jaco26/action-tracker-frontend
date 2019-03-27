@@ -1,9 +1,8 @@
 <template>
   <b-card>
-    <b-form-input type="date" v-model="dateStr1"></b-form-input>
-    <b-form-input type="date" v-model="dateStr2"></b-form-input>
+    <b-form-input type="date" v-model="d1"></b-form-input>
     <pre>
-      {{filterableActions}}
+      {{dateAndCategory}}
     </pre>
   </b-card>
 </template>
@@ -14,19 +13,24 @@ import { bindState } from '@/store/store';
 export default {
   computed: {
     ...bindState('myActions', [
-      'dateStr1',
-      'dateStr2',
+      'd1',
     ]),
     ...mapState('myActions', [
       'actions',
     ]),
     ...mapGetters('myActions', [
-      'groupActionsByCategory',
-      'filterActionsByDate',
+      'dateAndCategory',
     ]),
-    filterableActions() {
-      return this.dateStr1 ? this.filterActionsByDate : this.actions;   
-    }
+ 
+  },
+  mounted() {
+    const d = new Date();
+    const year = (d.getUTCFullYear()).toString();
+    let month = (d.getUTCMonth() + 1).toString();
+    let day = (d.getUTCDate()).toString();
+    month = month.length === 1 ? `0${month}` : month;
+    day = day.length === 1 ? `0${day}` : day;
+    this.d1 = `${year}-${month}-${day}`;
   }
 }
 </script>

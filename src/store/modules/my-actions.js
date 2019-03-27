@@ -1,5 +1,17 @@
 import { api } from '@/plugins/api';
 
+const util = {
+  filterByDate(state, testDateStr) {
+    const d = new Date(state.d1);
+    const start = new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
+    const end = new Date(start.getTime() + 86400000);
+    const td = new Date(testDateStr);
+    const testDate = new Date(td.getTime() + td.getTimezoneOffset());
+    return testDate > start && testDate < end;
+  }
+}
+
+
 export default {
   state: {
     categories: [],
@@ -7,8 +19,7 @@ export default {
     actions: [],
     actionsLoading: false,
     errors: [],
-    dateStr1: '',
-    dateStr2: '',
+    d1: '',
   },
   actions: {
     async getAllCategories({ commit, state }, payload) {
@@ -50,38 +61,20 @@ export default {
     },
   },
   getters: {
-    groupActionsByCategory(state) {
-      if (state.actions.length) {
+    dateAndCategory(state) {
+      if (state.actions && state.d1) {
         return state.actions.reduce((accum, action) => {
-          if (!accum[action.category_name]) accum[action.category_name] = [];
-          const { ts, displayDate, description, id } = action;
-          accum[action.category_name].push({ ts, displayDate, description, id });
+          if (util.filterByDate(state, action.ts)) {
+            if (!accum[action.category_name]) accum[action.category_name] = [];
+            accum[action.category_name].push({
+              description: action.description,
+              displayDate: action.displayDate,
+            });
+          }
           return accum;
         }, {});
       }
       return null;
     },
-    filterActionsByDate(state, getters) {
-      if (state.actions && state.dateStr1) {
-          const { dateStr1, dateStr2 } = state;
-          const baseDate = new Date(dateStr1);
-          const milliTZOffset = baseDate.getTimezoneOffset() * 60000;
-          const milliOneDay = 86400000;
-          const d1 = new Date(baseDate.getTime() + milliTZOffset);
-          const d2 = dateStr2
-            ? new Date(new Date(dateStr2).getTime() + milliOneDay + milliTZOffset)
-            : new Date(d1.getTime() + milliOneDay + milliTZOffset);
-
-          return state.actions.reduce((accum, action) => {
-            const testDate = new Date(new Date(action.ts).getTime() + milliTZOffset);
-            if (testDate > d1 && testDate < d2) {
-              accum.push(action);
-            }
-            return accum;
-          }, []);
-        }
-      return  null;
-    }
-
   }
 }
