@@ -8,24 +8,37 @@
           :key="category"
           style="height: 50px; min-width: 180"
         >
-         {{category}}: {{dateAndCategory[category].length}}
+        <app-anchor-badge :anchorTo="category" :linkText="dateAndCategory[category].length"></app-anchor-badge>
+        <!-- <h4 class="">
+          <a :href="`#${category}`">
+            <b-badge>{{category}}: {{dateAndCategory[category].length}}</b-badge> 
+          </a>
+        </h4> -->
         </b-col>
       </b-form-row>   
-      <!-- <b-row 
-        v-for="category in categories"
-        :key="category"
-      >
-        <strong>{{category}}</strong>
-        <b-col v-for="(item, i) in dateAndCategory[category]" :key="i">
-          {{item.displayDate}} <br>
-          {{item.description}}
-        </b-col>
-      </b-row> -->
 
-
-      <pre>
-        {{dateAndCategory}}
-      </pre>
+      <b-list-group v-for="(category, i) in categories" :key="i">
+        <h3 :id="category">{{category}}</h3>
+        <b-list-group-item 
+          v-for="(item, j) in dateAndCategory[category]" 
+          :key="j"
+          class="flex-column align-items-start"
+        >
+          <b-row>
+            <b-col class="d-flex w-100 justify-content-between">
+              <small>{{item.dateStr}}</small>
+              <small>{{item.timeStr}}</small>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              {{item.description}}
+            </b-col>
+          </b-row>
+          
+          <div class="d-flex w"></div>
+        </b-list-group-item>
+      </b-list-group>
     </b-card-text>
   </b-card>
 </template>
@@ -33,7 +46,11 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { bindState } from '@/store/store';
+import appAnchorBadge from '@/components/app/anchor-badge'
 export default {
+  components: {
+    appAnchorBadge,
+  },
   computed: {
     ...bindState('myActions', [
       'd1',

@@ -8,6 +8,14 @@ const util = {
     const td = new Date(testDateStr);
     const testDate = new Date(td.getTime() + td.getTimezoneOffset());
     return testDate > start && testDate < end;
+  },
+  formatTsToDate(itemsWithTimestamp) {
+    return itemsWithTimestamp.map(item => {
+      const d = new Date(item.ts);
+      item.dateStr = d.toDateString();
+      item.timeStr = d.toLocaleTimeString();
+      return item;
+    });
   }
 }
 
@@ -37,10 +45,7 @@ export default {
       try {
         commit('LOADING', ['actions', true]);
         const result = await api.get('/action-taken/');
-        commit('SET_STATE_VAL', ['actions', result.data.data.actions.map(a => {
-          a.displayDate = new Date(a.ts).toLocaleString();
-          return a;
-        })]);
+        commit('SET_STATE_VAL', ['actions', util.formatTsToDate(result.data.data.actions)]);
       } catch (error) {
         commit('ERROR', error.message);
       } finally {
@@ -66,9 +71,11 @@ export default {
         return state.actions.reduce((accum, action) => {
           if (util.filterByDate(state, action.ts)) {
             if (!accum[action.category_name]) accum[action.category_name] = [];
+            const { description, dateStr, timeStr } = action;
             accum[action.category_name].push({
-              description: action.description,
-              displayDate: action.displayDate,
+              description,
+              dateStr,
+              timeStr,
             });
           }
           return accum;
