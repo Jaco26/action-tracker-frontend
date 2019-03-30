@@ -71,8 +71,9 @@ export default {
         return state.actions.reduce((accum, action) => {
           if (util.filterByDate(state, action.ts)) {
             if (!accum[action.category_name]) accum[action.category_name] = [];
-            const { description, dateStr, timeStr } = action;
+            const { id, description, dateStr, timeStr } = action;
             accum[action.category_name].push({
+              id,
               description,
               dateStr,
               timeStr,

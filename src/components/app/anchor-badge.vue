@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 .anchor-badge {
-  padding: .1rem;
-  margin: .1rem;
+  padding: 0px;
+  margin: 0px;
 }
 </style>

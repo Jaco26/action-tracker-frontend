@@ -1,19 +1,30 @@
 <template>
   <b-card>
-    <b-form-input type="date" v-model="d1"></b-form-input>
+    <b-form-row>
+      <b-col cols="7" >
+        <b-form-input type="date" v-model="d1"></b-form-input>
+      </b-col>
+      <b-col class="d-flex justify-content-end">
+        <label for="enable-edit">Edit</label>
+        <b-form-checkbox 
+          v-model="enableEdit"
+          class="mx-2"
+          id="enable-edit"
+          switch
+        ></b-form-checkbox>
+      </b-col>
+    </b-form-row>
+    
     <b-card-text>
       <b-form-row>
         <b-col 
           v-for="category in categories"
           :key="category"
-          style="height: 50px; min-width: 180"
         >
-        <app-anchor-badge :anchorTo="category" :linkText="dateAndCategory[category].length"></app-anchor-badge>
-        <!-- <h4 class="">
-          <a :href="`#${category}`">
-            <b-badge>{{category}}: {{dateAndCategory[category].length}}</b-badge> 
-          </a>
-        </h4> -->
+        <app-anchor-badge 
+          :anchorTo="category" 
+          :linkText="dateAndCategory[category].length"
+        ></app-anchor-badge>
         </b-col>
       </b-form-row>   
 
@@ -31,11 +42,18 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col>
-              {{item.description}}
+            <b-col class="d-flex justify-content-between">
+              <span>{{item.description}}</span>
+              <div class="align-self-end">
+                <b-button 
+                  v-if="enableEdit" 
+                  size="sm" 
+                  variant="outline-info"
+                  @click="editItemId = item.id"
+                >Edit</b-button>
+              </div>
             </b-col>
           </b-row>
-          
           <div class="d-flex w"></div>
         </b-list-group-item>
       </b-list-group>
@@ -60,6 +78,10 @@ export default {
     ]),
     ...mapGetters('myActions', [
       'dateAndCategory',
+    ]),
+    ...bindState('editAction', [
+      'enableEdit',
+      'editItemId',
     ]),
     categories() {
       if (this.dateAndCategory) {

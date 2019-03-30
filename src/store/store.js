@@ -1,10 +1,11 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { mapState } from 'vuex';
 
 // modules
 import auth from './modules/auth';
 import myActions from './modules/my-actions';
 import newAction from './modules/new-action';
+import editAction from './modules/edit-action';
 import actionCategory from './modules/action-category';
 
 Vue.use(Vuex);
@@ -91,6 +92,7 @@ export const store = new Vuex.Store(wrap({
     auth,
     myActions,
     newAction,
+    editAction,
     actionCategory,
   },
 }));
@@ -121,18 +123,12 @@ function wrapModules(mods) {
   }, {});
 }
 
-function reduceNamespace(namespace, key) {
-  let stateRef = store.state;
-  return [...namespace.split('/'), key].reduce((a, b) => {
-    stateRef = stateRef[b];
-    return stateRef;
-  }, stateRef);
-}
 
 export function bindState(namespace, items) {  
+  const mappedState = mapState(namespace, items);
   return items.reduce((accum, b) => {
     accum[b] = {
-      get: () => reduceNamespace(namespace, b),
+      get: mappedState[b],
       set: val => store.commit(namespace + '/SET_STATE', { key: b, data: val }),
     };
     return accum;
