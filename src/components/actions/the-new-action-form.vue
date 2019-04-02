@@ -56,9 +56,9 @@ import { bindState } from '@/store/store';
 export default {
   mounted() {
     const date = new Date();
-    const year = date.getUTCFullYear();
-    const m = date.getUTCMonth() + 1;
-    const d = date.getUTCDate();
+    const year = date.getFullYear();
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
 
     const month = m < 10 ? `0${m}` : m;
     const day = d < 10 ? `0${d}` : d;
