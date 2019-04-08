@@ -12,7 +12,7 @@
       </b-form-group>
       <b-form-group label="Add a note">
         <b-form-textarea
-          v-model.trim="description"
+          v-model="description"
           rows="3"
           max-rows="3"
           no-resize=""

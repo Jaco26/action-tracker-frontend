@@ -21,7 +21,7 @@ export default {
           : new Date().toISOString();
         const action = {
           ts: timestamp,
-          description: state.description,
+          description: state.description.trim(),
           category_id: state.selectedCategoryId,
         }
         const result = await api.post('/action-taken/', { action });
