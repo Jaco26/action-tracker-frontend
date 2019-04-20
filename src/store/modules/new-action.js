@@ -20,11 +20,11 @@ export default {
           ? new Date(state.currentDate + ' ' + state.overrideTime).toISOString()
           : new Date().toISOString();
         const action = {
-          ts: timestamp,
+          ts_override: timestamp,
           description: state.description.trim(),
           category_id: state.selectedCategoryId,
         }
-        const result = await api.post('/action-taken/', { action });
+        const result = await api.post('/action-taken/', action);
         dispatch('myActions/getAllActions', null, { root: true });
         commit('CLEAR_FIELDS', { selectedCategoryId: null, description: '', overrideTime: '' });
       } catch (error) {

@@ -11,7 +11,9 @@ const util = {
   },
   formatTsToDate(itemsWithTimestamp) {
     return itemsWithTimestamp.map(item => {
-      const d = new Date(item.ts);
+      const d = item.ts_override
+        ? new Date(item.ts_override)
+        : new Date(item.ts);
       item.dateStr = d.toDateString();
       item.timeStr = d.toLocaleTimeString();
       return item;
