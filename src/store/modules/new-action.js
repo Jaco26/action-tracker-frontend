@@ -7,6 +7,7 @@ export default {
 
     currentDate: '',
     overrideTime: '',
+    showOverrideTimeForm: false,
 
     errors: [],
 
